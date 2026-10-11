@@ -29,16 +29,14 @@ class LeaveApplication(TimeStampedModel, UserScopedModel):
         ("offer_expired", "Offer Expired"),
     ]
 
-    posting = models.ForeignKey("JobPosting", on_delete=models.PROTECT,
-                                related_name="leave_applications")
+    posting_id = models.IntegerField()
     category = models.CharField(max_length=3, choices=LeaveCategory.choices)
     start_date = models.DateField()
     end_date = models.DateField()
     reason = models.TextField(blank=True)
     half_day_cl = models.BooleanField(default=False)
     station_leave_details = models.JSONField(default=dict, blank=True)
-    substitute = models.ForeignKey("UserRef", on_delete=models.SET_NULL,
-                                  related_name="substituted_for", null=True)
+    substitute_id = models.IntegerField(null=True)
     status = models.CharField(max_length=24, choices=STATUS, default="draft")
 
     def clean(self) -> None:
